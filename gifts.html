@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gifts</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #6f4a6e;
+    font-family: serif;
+}
+
+/* ===== LOADER ===== */
+#loader {
+    position: fixed;
+    inset: 0;
+    background: #6f4a6e;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.6s ease;
+}
+
+#loader.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.heart {
+    width: 70px;
+    height: 70px;
+    background: #ff6b81;
+    position: relative;
+    transform: rotate(-45deg);
+    animation: beat 1s infinite;
+}
+
+.heart::before,
+.heart::after {
+    content: "";
+    width: 70px;
+    height: 70px;
+    background: #ff6b81;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.heart::before { top: -35px; left: 0; }
+.heart::after { left: 35px; top: 0; }
+
+#loader p {
+    margin-top: 25px;
+    color: white;
+    font-family: 'Great Vibes', cursive;
+    font-size: 32px;
+}
+
+@keyframes beat {
+    0%, 100% { transform: rotate(-45deg) scale(1); }
+    50% { transform: rotate(-45deg) scale(1.25); }
+}
+
+/* ===== CONTENT ===== */
+.page {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+}
+
+h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(36px, 6vw, 64px);
+    margin-bottom: 50px;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: 0.6s;
+}
+
+h1.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+}
+
+.gift {
+    width: 150px;
+    height: 150px;
+    background: #f6c1cc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 0.6s;
+}
+
+.gift.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.gift.white { background: #fff; }
+
+.gift:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.gift img { width: 90px; pointer-events: none; }
+</style>
+</head>
+
+<body>
+
+<!-- LOADING SCREEN -->
+<div id="loader">
+    <div class="heart"></div>
+    <p id="loader-text">Loading gifts...</p>
+</div>
+
+<!-- MAIN PAGE -->
+<div class="page">
+    <h1>Here are the gifts for you</h1>
+
+    <div class="grid">
+        <div class="gift" onclick="openGift('photos')">
+            <img src="Photo icon.jpg" alt="photos">
+        </div>
+
+        <div class="gift" onclick="openGift('flowers')">
+            <img src="boquet of tulips.jpg" alt="flowers">
+        </div>
+
+        <div class="gift white" onclick="openGift('music')">
+            <img src="music icon.jpg" alt="music">
+        </div>
+
+        <div class="gift white" onclick="openGift('letter')">
+            <img src="letter.jpg" alt="letter">
+        </div>
+    </div>
+</div>
+
+<script>
+window.addEventListener("load", () => {
+    const loader = document.getElementById("loader");
+    const title = document.querySelector("h1");
+    const gifts = document.querySelectorAll(".gift");
+
+    setTimeout(() => {
+        loader.classList.add("hidden");
+
+        setTimeout(() => title.classList.add("show"), 200);
+
+        gifts.forEach((gift, i) => {
+            setTimeout(() => gift.classList.add("show"), 800 + i * 300);
+        });
+    }, 1200);
+});
+
+function openGift(type) {
+    const loader = document.getElementById("loader");
+    const text = document.getElementById("loader-text");
+
+    if (type === 'photos') text.textContent = "Loading photos...";
+    if (type === 'flowers') text.textContent = "Loading flowers...";
+    if (type === 'music') text.textContent = "Preparing music...";
+    if (type === 'letter') text.textContent = "Opening letter...";
+
+    loader.classList.remove("hidden");
+
+    setTimeout(() => {
+        if (type === 'photos') window.location.href = "photos.html";
+        if (type === 'flowers') window.location.href = "flowers.html";
+        if (type === 'music') window.location.href = "music.html";
+        if (type === 'letter') window.location.href = "letter.html";
+    }, 900);
+}
+</script>
+
+</body>
+</html>

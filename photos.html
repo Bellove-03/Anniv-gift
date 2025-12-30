@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Captured Memories</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #6f4a6e;
+    font-family: serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+/* ===== LOADER ===== */
+#loader {
+    position: fixed;
+    inset: 0;
+    background: #6f4a6e;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+}
+
+#loader.show {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.heart {
+    width: 70px;
+    height: 70px;
+    background: #ff6b81;
+    position: relative;
+    transform: rotate(-45deg);
+    animation: beat 1s infinite;
+}
+
+.heart::before,
+.heart::after {
+    content: "";
+    width: 70px;
+    height: 70px;
+    background: #ff6b81;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.heart::before { top: -35px; left: 0; }
+.heart::after { left: 35px; top: 0; }
+
+#loader p {
+    margin-top: 25px;
+    color: white;
+    font-family: 'Great Vibes', cursive;
+    font-size: 32px;
+}
+
+@keyframes beat {
+    0%, 100% { transform: rotate(-45deg) scale(1); }
+    50% { transform: rotate(-45deg) scale(1.25); }
+}
+
+/* ===== GALLERY ===== */
+.gallery {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    height: 1100px;
+}
+
+.gallery img {
+    position: absolute;
+    width: 120px;
+    border-radius: 6px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    cursor: pointer;
+    transition: transform 0.3s, opacity 0.6s, transform 0.6s;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.gallery img.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.gallery img:hover {
+    transform: scale(1.1);
+}
+
+/* ===== HEART SHAPE POSITIONS ===== */
+.img1  { top: 70px;  left: 26px; transform: rotate(-10deg); }
+.img2  { top: 150px; left: 800px; transform: rotate(-8deg); }
+.img3  { top: 260px; left: 200px; transform: rotate(-6deg); }
+.img4  { top: 400px; left: 20px; transform: rotate(-4deg); }
+.img5  { top: 600px; left: 26px; transform: rotate(-3deg); }
+.img6  { top: 8px;  right: -260px; transform: rotate(10deg); }
+.img7  { top: 160px; right: -200px; transform: rotate(8deg); }
+.img8  { top: 260px; right: 160px; transform: rotate(6deg); }
+.img9  { top: 640px; right: 250px; transform: rotate(4deg); }
+.img10 { top: 900px; right: 260px; transform: rotate(3deg); }
+.img11 { top: 40px;  left: 390px; transform: rotate(-5deg); }
+.img12 { top: 60px; left: 200px; transform: rotate(4deg); }
+.img13 { top: 400px; left: 450px; transform: rotate(-3deg); }
+.img14 { top: 900px; right: -200px; transform: rotate(3deg); }
+.img15 { top: 620px; left: 350px; transform: rotate(-5deg); }
+.img16 { top: 900px; left: 0px; transform: rotate(0deg); }
+.img17 { top: 780px; left: 730px; transform: rotate(5deg); }
+.img18 { top: 420px; left: 940px; transform: rotate(-4deg); }
+.img19 { top: 820px; right: 540px; transform: rotate(4deg); }
+.img20 { top: 560px; left: 790px; transform: rotate(2deg); }
+
+/* ===== TEXT & BUTTON ===== */
+.title, .return-btn {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.title.show, .return-btn.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.title {
+    margin-top: 40px;
+    font-family: 'Great Vibes', cursive;
+    font-size: 42px;
+    color: white;
+}
+
+.return-btn {
+    margin-top: 20px;
+    padding: 12px 40px;
+    background: black;
+    color: white;
+    border: none;
+    font-family: 'Great Vibes', cursive;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.return-btn:hover { opacity: 0.8; }
+
+/* ===== FULLSCREEN LIGHTBOX ===== */
+#lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+#lightbox img {
+    max-width: 95%;
+    max-height: 95%;
+    border-radius: 10px;
+}
+
+#close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+    <div class="heart"></div>
+    <p>Loading...</p>
+</div>
+
+<div class="gallery">
+    <img src="lovey1.jpg"  class="img1">
+    <img src="lovey2.jpg"  class="img2">
+    <img src="lovey3.jpg"  class="img3">
+    <img src="lovey4.jpg"  class="img4">
+    <img src="lovey5.jpg"  class="img5">
+    <img src="lovey6.jpg"  class="img6">
+    <img src="lovey7.jpg"  class="img7">
+    <img src="lovey8.jpg"  class="img8">
+    <img src="lovey9.jpg"  class="img9">
+    <img src="lovey10.jpg" class="img10">
+    <img src="lovey11.jpg" class="img11">
+    <img src="lovey12.jpg" class="img12">
+    <img src="lovey13.jpg" class="img13">
+    <img src="lovey14.jpg" class="img14">
+    <img src="lovey15.jpg" class="img15">
+    <img src="lovey16.jpg" class="img16">
+    <img src="lovey17.jpg" class="img17">
+    <img src="lovey18.jpg" class="img18">
+    <img src="lovey19.jpg" class="img19">
+    <img src="lovey20.jpg" class="img20">
+</div>
+
+<div class="title">Captured Memories of Us</div>
+<button class="return-btn" onclick="window.location.href='gifts.html'">Return</button>
+
+<!-- FULLSCREEN VIEW -->
+<div id="lightbox">
+    <span id="close">&times;</span>
+    <img id="lightbox-img">
+</div>
+
+<script>
+const galleryImages = document.querySelectorAll('.gallery img');
+const title = document.querySelector('.title');
+const returnBtn = document.querySelector('.return-btn');
+const loader = document.getElementById('loader');
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+
+// Show images, title, and button one by one
+window.addEventListener('load', () => {
+    galleryImages.forEach((img, index) => {
+        setTimeout(() => {
+            img.classList.add('show');
+            img.onclick = () => showLoaderThenLightbox(img.src);
+        }, index * 150);
+    });
+
+    setTimeout(() => title.classList.add('show'), galleryImages.length * 150);
+    setTimeout(() => returnBtn.classList.add('show'), galleryImages.length * 150 + 300);
+});
+
+// Show loader before opening lightbox
+function showLoaderThenLightbox(src) {
+    loader.classList.add('show');
+    setTimeout(() => {
+        loader.classList.remove('show');
+        openLightbox(src);
+    }, 800); // loader duration
+}
+
+function openLightbox(src) {
+    lightboxImg.src = src;
+    lightbox.style.display = "flex";
+}
+
+document.getElementById("close").onclick = () => {
+    lightbox.style.display = "none";
+}
+</script>
+
+</body>
+</html>
